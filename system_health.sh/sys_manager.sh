@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 # Simple system manager script
 
-# -------------------------
-# Helpers
-# -------------------------
+
 err() { echo "[ERROR] $*"; }
 ok()  { echo "[OK] $*"; }
 
 safe_exit() { exit "$1"; }
 
-# -------------------------
+
 # Add users from file
-# -------------------------
+
 add_users() {
   file="$1"
   [[ ! -f "$file" ]] && { err "File not found"; safe_exit 1; }
@@ -23,9 +21,9 @@ fi
   done < "$file"
 }
 
-# -------------------------
+
 # Setup projects for user
-# -------------------------
+
 setup_projects() {
   user="$1"; num="$2"
   [[ ! $(id -u "$user" 2>/dev/null) ]] && { err "User not found"; safe_exit 1; }
@@ -40,9 +38,9 @@ setup_projects() {
   done
 }
 
-# -------------------------
+
 # System report
-# -------------------------
+
 sys_report() {
   out="$1"
   {
@@ -56,9 +54,9 @@ sys_report() {
   ok "Report saved to $out"
 }
 
-# -------------------------
+
 # Manage processes
-# -------------------------
+
 process_manage() {
   user="$1"; action="$2"
   case "$action" in
@@ -72,9 +70,9 @@ process_manage() {
   esac
 }
 
-# -------------------------
+
 # Set permissions & owner
-# -------------------------
+
 perm_owner() {
   path="$2"; perms="$3"; owner="$4"; group="$5"
   [[ ! -e "$path" ]] && { err "Path not found"; safe_exit 1; }
@@ -83,18 +81,18 @@ perm_owner() {
   ok "Updated $path"
 }
 
-# -------------------------
+
 # Help
-# -------------------------
+
 help() {
   echo "Usage: $0 <mode> [args]"
   echo "Modes: add_users <file>, setup_projects <user> <num>, sys_report <file>, process_manage <user> <action>, perm_owner <user> <path> <perms> <owner> <group>"
   safe_exit 0
 }
 
-# -------------------------
+
 # Main
-# -------------------------
+
 [[ $# -lt 1 ]] && help
 mode="$1"; shift
 case "$mode" in
