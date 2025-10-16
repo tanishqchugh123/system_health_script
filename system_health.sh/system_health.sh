@@ -17,7 +17,9 @@ add_users() {
   [[ ! -f "$file" ]] && { err "File not found"; safe_exit 1; }
   while read -r user; do
     [[ -z "$user" || "$user" =~ ^# ]] && continue
-    id "$user" &>/dev/null || sudo useradd -m -s /bin/bash "$user" && ok "Created $user"
+    if ! id "$user" &>/dev/null; then
+    sudo useradd -m -s /bin/bash "$user" && ok "Created $user"
+fi
   done < "$file"
 }
 
